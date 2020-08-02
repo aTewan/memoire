@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: trepo-monolithe
+  labels:
+    app: trepo-monolithe
+spec:
+  ports:
+  - name: trepo-monolithe
+    port: 80
+    targetPort: 3000
+    protocol: TCP
+  type: LoadBalancer
+  selector:
+    app: trepo-monolithe

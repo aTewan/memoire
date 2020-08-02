@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trepo-monolithe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trepo-monolithe
+  template:
+    metadata:
+      labels:
+        app: trepo-monolithe
+    spec:
+      containers:
+        - name: trepo-monolithe
+          image: atewan/trepo-monolithe:1.0.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_HOSTNAME
+              value: "mongo"
