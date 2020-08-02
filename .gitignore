@@ -1,0 +1,5 @@
+api/node_modules
+api/coverage
+api/dist
+.vscode
+.DS_Store
