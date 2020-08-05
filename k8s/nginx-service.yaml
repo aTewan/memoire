@@ -9,10 +9,6 @@ spec:
   rules:
     - http:
         paths:
-        - path : /hello
-          backend:
-            serviceName: hello-srv
-            servicePort: 5000
         - path: /
           backend:
             serviceName: trepo-monolithe-srv
