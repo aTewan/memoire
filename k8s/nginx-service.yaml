@@ -7,15 +7,14 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-  - host: trepo-backend.com
-    http:
-      paths:
-      - path : /hello
-        backend:
-          serviceName: hello-srv
-          servicePort: 5000
-      - path: /
-        backend:
-          serviceName: trepo-monolithe-srv
-          servicePort: 3000
+    - http:
+        paths:
+        - path : /hello
+          backend:
+            serviceName: hello-srv
+            servicePort: 5000
+        - path: /
+          backend:
+            serviceName: trepo-monolithe-srv
+            servicePort: 3000
       
