@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-users-srv
+  labels:
+    app: db-users
+spec:
+  ports:
+  - name: db-users
+    port: 27017
+    targetPort: 27017
+    protocol: TCP
+  selector:
+    app: db-users

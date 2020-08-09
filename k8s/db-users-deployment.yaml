@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-users
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-users
+  template:
+    metadata:
+      labels:
+        app: db-users
+    spec:
+      containers:
+        - name: db-users
+          image: mongo
+          ports:
+            - containerPort: 27017

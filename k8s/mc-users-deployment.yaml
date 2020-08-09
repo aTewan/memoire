@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: trepo-monolithe
+  name: mc-users
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trepo-monolithe
+      app: mc-users
   template:
     metadata:
       labels:
-        app: trepo-monolithe
+        app: mc-users
     spec:
       containers:
-        - name: trepo-monolithe
-          image: atewan/trepo-monolithe:1.0.9
+        - name: mc-users
+          image: atewan/mc-users:1.0.8
           ports:
-            - containerPort: 3000
+            - containerPort: 4000
           env:
             - name: MONGO_PORT
               value: "27017"
             - name: MONGO_HOSTNAME
-              value: "mongo-srv"
+              value: "db-users-srv"

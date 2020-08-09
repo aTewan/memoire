@@ -9,6 +9,10 @@ spec:
   rules:
     - http:
         paths:
+        - path: /users
+          backend:
+            serviceName: mc-users-srv
+            servicePort: 4000
         - path: /
           backend:
             serviceName: trepo-monolithe-srv
