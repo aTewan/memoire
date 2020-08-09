@@ -1,4 +1,6 @@
 api/node_modules
+users/node_modules
+users/dist
 api/coverage
 api/dist
 .vscode
