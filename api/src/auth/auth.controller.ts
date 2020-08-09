@@ -21,9 +21,4 @@ export class AuthController {
   async verifyToken(@Body() tokenDto: TokenDto) {
     return await this.authServices.verifyToken(tokenDto.token);
   }
-
-  @Post('whoami')
-  async whoami(@Body() tokenDto: TokenDto) {
-    return await this.authServices.whoAmI(tokenDto.token)
-  }
 }

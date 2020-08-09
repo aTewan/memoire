@@ -1,21 +1,22 @@
-import { Injectable, UnauthorizedException, GoneException, BadRequestException, BadGatewayException, ServiceUnavailableException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, GoneException, BadRequestException, BadGatewayException, ServiceUnavailableException, HttpService } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt'
-import { UsersService } from '../users/users.service'
 import { LoginDto } from './dto/login-dto'
 import * as bcrypt from 'bcryptjs'
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersServices: UsersService,
+    private httpService: HttpService,
     private jwtService: JwtService) {}
 
   async login(loginDto: LoginDto): Promise<{token: string}> {
     const { email, password } = loginDto
-    const userFound = await this.usersServices.getUserByEmail(email);
-    let passwordCorrespondance = await bcrypt.compare(password, userFound.password)
+    const url = "http://mc-users-srv:4000/users/" + email;
+    const res: any = await this.httpService.get(url).toPromise();
+    let passwordCorrespondance = await bcrypt.compare(password, res.data.password)
     if (passwordCorrespondance) {
-      const payload = { id: userFound.id }
+      const payload = { id: res.data._id }
+      console.log(payload);
       const accessToken: string = await this.jwtService.sign(payload)
       return { token: accessToken }
     } else {
@@ -33,14 +34,6 @@ export class AuthService {
     catch(err) {
       console.log(err)
       throw new BadRequestException()
-    }
-  }
-
-  async whoAmI(token: string) {
-    if (token) {
-      let id = await this.jwtService.verify(token).id
-      const user = await this.usersServices.getUserById(id);
-      return user
     }
   }
 }

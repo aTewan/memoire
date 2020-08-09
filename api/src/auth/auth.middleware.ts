@@ -1,12 +1,11 @@
-import { NestMiddleware, Injectable, Inject, forwardRef, UnauthorizedException } from "@nestjs/common";
+import { NestMiddleware, Injectable, Inject, forwardRef, UnauthorizedException, HttpService } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from "../users/users.service";
 import { Request, Response ,NextFunction } from "express";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
-    private readonly usersService: UsersService,
+    private httpService: HttpService,
     private jwtService: JwtService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
@@ -16,7 +15,9 @@ export class AuthMiddleware implements NestMiddleware {
     if (authHeaders && (authHeaders as string).split(' ')[1]) {
       const token = (authHeaders as string).split(' ')[1];
       const decoded: any = this.jwtService.verify(token);
-      const user = await this.usersService.getUserById(decoded.id)
+      const url = "http://mc-users-srv:4000/user/" + decoded.id;
+      const res: any = await this.httpService.get(url).toPromise();
+      const user = res.data
 
       if (!user) {
         throw new UnauthorizedException()

@@ -1,11 +1,10 @@
-import { Module, NestModule, MiddlewareConsumer, RequestMethod, forwardRef } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod, forwardRef, HttpModule } from '@nestjs/common';
 import { SalesController } from './sales.controller';
 import { SalesService } from './sales.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Sale } from './sale.entity';
 import { AuthMiddleware } from '../auth/auth.middleware';
 import { AuthModule } from '../auth/auth.module';
-import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 
 const timeExp: number = 3600*1000*24*30
@@ -13,7 +12,7 @@ const timeExp: number = 3600*1000*24*30
 @Module({
   imports: [TypeOrmModule.forFeature([Sale]),
   AuthModule,
-  forwardRef(() => UsersModule),
+  forwardRef(() => HttpModule),
   forwardRef(() => JwtModule.register({
     secret: "le-secret-lol",
     signOptions: {

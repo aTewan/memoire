@@ -1,7 +1,6 @@
-import { Controller, Get, Post, UsePipes, ValidationPipe, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, UsePipes, ValidationPipe, Body, Query, Req } from '@nestjs/common';
 import { DiscussionsService } from './discussions.service';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { DUser } from '../users/user.decorator';
 import { CreatePrivateMessageDto } from './dto/create-private-message-dto';
 
 @ApiTags('discussions')
@@ -10,14 +9,16 @@ export class DiscussionsController {
   constructor(private discussionService: DiscussionsService) {}
 
   @Get()
-  async getAllPrivateMessages(@DUser('id') userId: string) {
+  async getAllPrivateMessages(@Req() req: any) {
+    let userId = req.user._id;
     return await this.discussionService.getPrivateMessagesByUserIdAndSaleId(userId);
   }
 
   @Post()
   @UsePipes(ValidationPipe)
   @ApiBearerAuth()
-  async createPrivateMessage(@DUser('id') userId: string, @Body() createPrivateMessageDto: CreatePrivateMessageDto) {
+  async createPrivateMessage(@Req() req: any, @Body() createPrivateMessageDto: CreatePrivateMessageDto) {
+    let userId = req.user._id;
     return await this.discussionService.createPrivateMessage(userId, createPrivateMessageDto)
   }
 }

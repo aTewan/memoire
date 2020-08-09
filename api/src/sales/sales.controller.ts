@@ -1,10 +1,9 @@
-import { Controller, Get, Param, Body, ValidationPipe, UsePipes, Post, Patch, Delete, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
+import { Controller, Get, Param, Req, Body, ValidationPipe, UsePipes, Post, Patch, Delete, UseInterceptors, UploadedFiles, Query } from '@nestjs/common';
 import { FilesInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express'
 import { SalesService } from './sales.service';
 import { ApiTags, ApiInternalServerErrorResponse, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { CreateSaleDto } from './dto/create-sale-dto';
 import { UpdateSaleDto } from './dto/update-sale-dto';
-import { DUser } from '../users/user.decorator';
 
 @ApiTags('sales')
 @Controller('sales')
@@ -41,7 +40,8 @@ export class SalesController {
   @ApiBearerAuth()
   @ApiCreatedResponse({description: "La vente a bien été enregistré"})
   @ApiInternalServerErrorResponse({description: "Internal Server Error"})
-  async createSale(@DUser('id') userId: string, @Body() createSaleDto: CreateSaleDto) {
+  async createSale(@Req() req: any, @Body() createSaleDto: CreateSaleDto) {
+    let userId = req.user._id;
     return await this.salesService.createSale(userId, createSaleDto);
   }
 
